@@ -24,7 +24,7 @@ func TestRetrieve(t *testing.T) {
 		wantErr error
 	}{
 		{
-			name: "test normal retrieve",
+			name: "test normal retrieve (currency = Renminbi)",
 			args: args{
 				date:     "2022-12-31",
 				currency: "Renminbi",
@@ -33,6 +33,19 @@ func TestRetrieve(t *testing.T) {
 			want: &model.ExchangeRate{
 				ExchangeRate: "6.897",
 				RecordDate:   "2022-12-31",
+			},
+			wantErr: nil,
+		},
+		{
+			name: "test normal retrieve (currency = Dollar)",
+			args: args{
+				date:     "2023-03-31",
+				currency: "Dollar",
+				within:   6,
+			},
+			want: &model.ExchangeRate{
+				ExchangeRate: "1.494",
+				RecordDate:   "2023-03-31",
 			},
 			wantErr: nil,
 		},

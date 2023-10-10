@@ -51,7 +51,7 @@ func NewServer(cfg config.ServerConfig, repo pgx.PurchaseRepository, within int,
 }
 
 func (s *Server) SavePurchaseTransaction(ctx context.Context, req *purchasev1.SavePurchaseRequest) (*purchasev1.SavePurchaseResponse, error) {
-	amount, err := strconv.Atoi(req.Amount)
+	amount, err := strconv.ParseFloat(req.Amount, 32)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (s *Server) SavePurchaseTransaction(ctx context.Context, req *purchasev1.Sa
 	id, err := s.repo.SavePurchase(ctx, &model.Transaction{
 		Description: req.Description,
 		Date:        utils.ToFormattedDate(req.TransactionDate),
-		Amount:      amount * 100,
+		Amount:      int(amount * 100),
 	})
 	if err != nil {
 		return nil, err
