@@ -15,6 +15,12 @@ func Connect(ctx context.Context, cfg config.DatabaseConfig, zl *zap.Logger) (*p
 	if err != nil {
 		return nil, err
 	}
+	if cfg.MaxConns != 0 {
+		pcfg.MaxConns = cfg.MaxConns
+	}
+	if cfg.MaxConnsLifetime != 0 {
+		pcfg.MaxConnLifetime = cfg.MaxConnsLifetime
+	}
 
 	return pgxpool.NewWithConfig(ctx, pcfg)
 }

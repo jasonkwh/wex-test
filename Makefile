@@ -1,6 +1,9 @@
 SVCUSER = wex_dev
 SVCPASS = password
 
+test-integration:
+	go test -count=1 -p=1 -tags=integration -v ./...
+
 serve:
 	go run main.go --config=./config/config.yaml serve
 

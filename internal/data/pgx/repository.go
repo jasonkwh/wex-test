@@ -41,7 +41,7 @@ func (r *dbPurchaseRepository) SavePurchase(ctx context.Context, p *model.Transa
 	// the unique identifier
 	id := p.Hash()
 
-	_, err = tx.Exec(ctx, "select wex.save_purchase($1, $2, $3, $4)", id, p.Date, p.Amount, p.Description)
+	_, err = tx.Exec(ctx, "select * from wex.save_purchase($1, $2, $3, $4)", id, p.Date, p.Amount, p.Description)
 	if err != nil {
 		return "", fmt.Errorf("wex.save_purchase execution failed: %v", err)
 	}
@@ -58,25 +58,9 @@ func (r *dbPurchaseRepository) SavePurchase(ctx context.Context, p *model.Transa
 func (r *dbPurchaseRepository) GetPurchase(ctx context.Context, id string) (*model.Transaction, error) {
 	r.zl.Info("repo.GetPurchase: started")
 
-	// start db tx
-	tx, err := r.pool.Begin(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	rows, err := tx.Query(ctx, "SELECT wex.get_purchase($1)", id)
-	if err != nil {
-		return nil, fmt.Errorf("wex.get_purchase execution failed: %v", err)
-	}
-	defer rows.Close()
-
 	ts := model.Transaction{}
-	err = rows.Scan(&ts.Date, &ts.Amount, &ts.Description)
-	if err != nil {
-		return nil, err
-	}
-
-	err = tx.Commit(ctx)
+	rows := r.pool.QueryRow(ctx, "SELECT * from wex.get_purchase($1)", id)
+	err := rows.Scan(&ts.Date, &ts.Amount, &ts.Description)
 	if err != nil {
 		return nil, err
 	}

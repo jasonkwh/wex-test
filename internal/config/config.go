@@ -1,5 +1,7 @@
 package config
 
+import "time"
+
 type ServerConfig struct {
 	Port string
 }
@@ -7,4 +9,6 @@ type ServerConfig struct {
 type DatabaseConfig struct {
 	Host, Database, User, Password string
 	Port                           int
+	MaxConns                       int32
+	MaxConnsLifetime               time.Duration
 }

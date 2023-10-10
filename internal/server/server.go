@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"strconv"
 
 	"github.com/jasonkwh/wex-test-upstream/svc/purchasev1"
 	"github.com/jasonkwh/wex-test/internal/config"
@@ -50,10 +51,15 @@ func NewServer(cfg config.ServerConfig, repo pgx.PurchaseRepository, within int,
 }
 
 func (s *Server) SavePurchaseTransaction(ctx context.Context, req *purchasev1.SavePurchaseRequest) (*purchasev1.SavePurchaseResponse, error) {
+	amount, err := strconv.Atoi(req.Amount)
+	if err != nil {
+		return nil, err
+	}
+
 	id, err := s.repo.SavePurchase(ctx, &model.Transaction{
 		Description: req.Description,
 		Date:        utils.ToFormattedDate(req.TransactionDate),
-		Amount:      int(req.Amount * 100),
+		Amount:      amount * 100,
 	})
 	if err != nil {
 		return nil, err
@@ -82,9 +88,9 @@ func (s *Server) GetPurchaseTransaction(ctx context.Context, req *purchasev1.Get
 		Id:              req.Id,
 		Description:     ts.Description,
 		TransactionDate: utils.ToUpstreamDate(ts.Date),
-		Amount:          float32(amount),
+		Amount:          fmt.Sprintf("%.2f", amount),
 		ExchangeRate:    exr.ExchangeRate,
-		ConvertedAmount: float32(convertedAmount),
+		ConvertedAmount: fmt.Sprintf("%.2f", convertedAmount),
 	}, nil
 }
 

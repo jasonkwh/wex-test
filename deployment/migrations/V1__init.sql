@@ -1,5 +1,5 @@
 CREATE TABLE wex.transactions (
-    id varchar(64),
+    id varchar(64) PRIMARY KEY,
     transaction_date varchar(10),
     amount int,
     description varchar(50),

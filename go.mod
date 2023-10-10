@@ -5,7 +5,8 @@ go 1.21
 require (
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/jackc/pgx/v5 v5.4.3
-	github.com/jasonkwh/wex-test-upstream v0.0.0-20231010110818-be36586a4fc7
+	github.com/jasonkwh/wex-test-upstream v0.0.0-20231010132223-f2c952e5782f
+	github.com/onsi/gomega v1.28.0
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.17.0
 	go.uber.org/multierr v1.11.0
@@ -16,6 +17,7 @@ require (
 require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect

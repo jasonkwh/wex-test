@@ -11,7 +11,7 @@ BEGIN
         ts.amount,
         ts.description
     FROM wex.transactions AS ts
-    WHERE ts.id = trans_id AND ts.transaction_type = "PURCHASE";
+    WHERE ts.id = trans_id AND ts.transaction_type = 'PURCHASE';
 END;
 $func$;
 
