@@ -4,6 +4,12 @@ SVCPASS = password
 test-integration:
 	go test -count=1 -p=1 -tags=integration -v ./...
 
+test-unit:
+	go test -count=1 ./...
+
+test-clean-cache:
+	go clean -testcache
+
 serve:
 	go run main.go --config=./config/config.yaml serve
 
