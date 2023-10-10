@@ -2,7 +2,6 @@ SET myvars._dbpass TO :'_dbpass';
 SET myvars._dbuser TO :'_dbuser';
 SET myvars._user TO :'_user';
 
--- TEST IF THE WEX SCHEMA ALREADY EXISTS
 DO $$
 DECLARE
   _dbpass TEXT := current_setting('myvars._dbpass', true);

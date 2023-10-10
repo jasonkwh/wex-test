@@ -29,8 +29,6 @@ migrate:
 		-h postgres \
 		-U postgres \
 		-f /deployment/dependencies.sql \
-		-v _db=postgres \
-		-v _pass=password \
 		-v _user=postgres \
 		-v _dbpass=${SVCPASS} \
 		-v _dbuser=${SVCUSER}
