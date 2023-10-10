@@ -6,6 +6,9 @@ CREATE TABLE wex.transactions (
     transaction_type varchar(20)
 );
 
+-- index
+CREATE INDEX idx_id_transaction_type ON wex.transactions (id, transaction_type);
+
 -- permission
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA wex TO ${service_user};
 GRANT CREATE ON SCHEMA wex TO ${service_user};
