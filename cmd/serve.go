@@ -35,7 +35,7 @@ func serve(cmd *cobra.Command, args []string) {
 	}
 
 	// start server
-	srv, err := server.NewServer(cfg.Server, re, zl)
+	srv, err := server.NewServer(cfg.Server, re, cfg.ExchangeRate.Within, zl)
 	if err != nil {
 		zl.Fatal("unable to start the purchase transaction server", zap.Error(err))
 	}

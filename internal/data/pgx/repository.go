@@ -29,7 +29,7 @@ func CreatePurchaseRepository(dbcfg config.DatabaseConfig, zl *zap.Logger) (Purc
 	}, nil
 }
 
-func (r *dbPurchaseRepository) SavePurchase(ctx context.Context, p model.Transaction) (string, error) {
+func (r *dbPurchaseRepository) SavePurchase(ctx context.Context, p *model.Transaction) (string, error) {
 	r.zl.Info("repo.SavePurchase: started")
 
 	// start db tx
@@ -55,34 +55,34 @@ func (r *dbPurchaseRepository) SavePurchase(ctx context.Context, p model.Transac
 	return id, nil
 }
 
-func (r *dbPurchaseRepository) GetPurchase(ctx context.Context, id string) (model.Transaction, error) {
+func (r *dbPurchaseRepository) GetPurchase(ctx context.Context, id string) (*model.Transaction, error) {
 	r.zl.Info("repo.GetPurchase: started")
 
 	// start db tx
 	tx, err := r.pool.Begin(ctx)
 	if err != nil {
-		return model.Transaction{}, err
+		return nil, err
 	}
 
 	rows, err := tx.Query(ctx, "SELECT wex.get_purchase($1)", id)
 	if err != nil {
-		return model.Transaction{}, fmt.Errorf("wex.get_purchase execution failed: %v", err)
+		return nil, fmt.Errorf("wex.get_purchase execution failed: %v", err)
 	}
 	defer rows.Close()
 
 	ts := model.Transaction{}
 	err = rows.Scan(&ts.Date, &ts.Amount, &ts.Description)
 	if err != nil {
-		return model.Transaction{}, err
+		return nil, err
 	}
 
 	err = tx.Commit(ctx)
 	if err != nil {
-		return model.Transaction{}, err
+		return nil, err
 	}
 
 	r.zl.Info("repo.GetPurchase: done")
-	return ts, nil
+	return &ts, nil
 }
 
 func (r *dbPurchaseRepository) Close() error {

@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/jackc/pgx/v5 v5.4.3
-	github.com/jasonkwh/wex-test-upstream v0.0.0-20231010000950-c9a3797a06cc
+	github.com/jasonkwh/wex-test-upstream v0.0.0-20231010110818-be36586a4fc7
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.17.0
 	go.uber.org/multierr v1.11.0

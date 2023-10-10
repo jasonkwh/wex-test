@@ -33,6 +33,10 @@ var cfgFile string
 type Config struct {
 	Server   config.ServerConfig
 	Database config.DatabaseConfig
+
+	ExchangeRate struct {
+		Within int
+	}
 }
 
 func init() {

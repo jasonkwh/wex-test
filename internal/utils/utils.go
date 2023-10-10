@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 
@@ -23,4 +24,13 @@ func ToUpstreamDate(date string) *purchasev1.Date {
 		Month: int32(month),
 		Day:   int32(day),
 	}
+}
+
+// exchange rate conversion
+func GetConvertedAmount(amount float64, exchangeRate string) float64 {
+	rate, err := strconv.ParseFloat(exchangeRate, 64)
+	if err != nil {
+		return 0
+	}
+	return math.Round(amount*rate*100) / 100
 }

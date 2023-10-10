@@ -8,8 +8,8 @@ import (
 )
 
 type PurchaseRepository interface {
-	SavePurchase(ctx context.Context, purchase model.Transaction) (id string, err error)
-	GetPurchase(ctx context.Context, id string) (purchase model.Transaction, err error)
+	SavePurchase(ctx context.Context, purchase *model.Transaction) (id string, err error)
+	GetPurchase(ctx context.Context, id string) (purchase *model.Transaction, err error)
 
 	io.Closer
 }
