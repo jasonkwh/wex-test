@@ -6,6 +6,7 @@ import (
 	"io"
 	"math"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/jasonkwh/wex-test/internal/data/model"
@@ -15,11 +16,22 @@ import (
 var ErrFailedRetrieve = fmt.Errorf("purchase cannot converted to the target currency")
 
 func Retrieve(date, currency string, within int) (*model.ExchangeRate, error) {
-	resp, err := http.Get(fmt.Sprintf(
-		"https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/rates_of_exchange?filter=record_date:lte:%s,currency:eq:%s&format=json&sort=-record_date&fields=exchange_rate,record_date&page[number]=1&page[size]=1",
-		date,
-		currency,
-	))
+	baseURL := "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/rates_of_exchange"
+
+	// query parameters
+	params := map[string]string{
+		"filter":       fmt.Sprintf("record_date:lte:%s,currency:eq:%s", date, currency),
+		"format":       "json",
+		"sort":         "-record_date",
+		"fields":       "exchange_rate,record_date",
+		"page[number]": "1",
+		"page[size]":   "1",
+	}
+
+	// append params into url
+	fullURL := baseURL + "?" + encodeQueryParams(params)
+
+	resp, err := http.Get(fullURL)
 	if err != nil {
 		err = multierr.Append(ErrFailedRetrieve, err)
 		return nil, err
@@ -46,6 +58,14 @@ func Retrieve(date, currency string, within int) (*model.ExchangeRate, error) {
 		return nil, ErrFailedRetrieve
 	}
 	return &exr, nil
+}
+
+func encodeQueryParams(params map[string]string) string {
+	values := url.Values{}
+	for key, value := range params {
+		values.Add(key, value)
+	}
+	return values.Encode()
 }
 
 func isValid(date1, date2 string, within int) bool {
