@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"math"
 	"strconv"
 	"strings"
 
@@ -42,5 +41,5 @@ func GetConvertedAmount(amount float64, exchangeRate string) float64 {
 	if err != nil {
 		return 0
 	}
-	return math.Round(amount*rate*100) / 100
+	return amount * rate
 }
