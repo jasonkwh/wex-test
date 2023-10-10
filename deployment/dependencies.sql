@@ -1,7 +1,3 @@
--- CONNECT TO THE DATABASE
-\c :_db;
-
-SET myvars._db TO :'_db';
 SET myvars._dbpass TO :'_dbpass';
 SET myvars._dbuser TO :'_dbuser';
 SET myvars._user TO :'_user';
@@ -9,7 +5,6 @@ SET myvars._user TO :'_user';
 -- TEST IF THE WEX SCHEMA ALREADY EXISTS
 DO $$
 DECLARE
-  _db TEXT := current_setting('myvars._db', true);
   _dbpass TEXT := current_setting('myvars._dbpass', true);
   _dbuser TEXT := current_setting('myvars._dbuser', true);
   _user TEXT := current_setting('myvars._user', true);
