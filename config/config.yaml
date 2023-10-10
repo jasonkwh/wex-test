@@ -1,0 +1,9 @@
+Server:
+  Port: 9000
+
+Database:
+  User: wex_dev
+  Password: password
+  Host: localhost
+  Port: 5432
+  Database: postgres

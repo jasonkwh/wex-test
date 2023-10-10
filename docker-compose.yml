@@ -1,0 +1,20 @@
+version: "3.8"
+
+networks:
+  basic:
+    name: wex_basic
+
+services:
+  postgres:
+    hostname: postgres
+    container_name: postgres
+    restart: always
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    ports:
+      - 5432:5432
+    networks:
+      - basic
