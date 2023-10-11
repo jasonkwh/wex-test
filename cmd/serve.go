@@ -34,6 +34,7 @@ func serve(cmd *cobra.Command, args []string) {
 	if err != nil {
 		zl.Fatal("unable to create purchase repository", zap.Error(err))
 	}
+	clPool = append(clPool, re)
 
 	// create exchange rate retriever
 	ret := exchangerate.NewRetriever(&http.Client{}, cfg.ExchangeRate.Within)
