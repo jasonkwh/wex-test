@@ -15,7 +15,19 @@ import (
 
 var ErrFailedRetrieve = fmt.Errorf("purchase cannot converted to the target currency")
 
-func Retrieve(date, currency string, within int) (*model.ExchangeRate, error) {
+type Retriever struct {
+	httpClient HTTPClient
+	within     int
+}
+
+func NewRetriever(client HTTPClient, within int) *Retriever {
+	return &Retriever{
+		httpClient: client,
+		within:     within,
+	}
+}
+
+func (r *Retriever) Get(date, currency string) (*model.ExchangeRate, error) {
 	baseURL := "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/rates_of_exchange"
 
 	// query parameters
@@ -31,7 +43,13 @@ func Retrieve(date, currency string, within int) (*model.ExchangeRate, error) {
 	// append params into url
 	fullURL := baseURL + "?" + encodeQueryParams(params)
 
-	resp, err := http.Get(fullURL)
+	req, err := http.NewRequest(http.MethodGet, fullURL, nil)
+	if err != nil {
+		err = multierr.Append(ErrFailedRetrieve, err)
+		return nil, err
+	}
+
+	resp, err := r.httpClient.Do(req)
 	if err != nil {
 		err = multierr.Append(ErrFailedRetrieve, err)
 		return nil, err
@@ -54,7 +72,7 @@ func Retrieve(date, currency string, within int) (*model.ExchangeRate, error) {
 	// we only retrieve one record
 	exr := exrs.Data[0]
 
-	if !isValid(date, exr.RecordDate, within) {
+	if !isValid(date, exr.RecordDate, r.within) {
 		return nil, ErrFailedRetrieve
 	}
 	return &exr, nil

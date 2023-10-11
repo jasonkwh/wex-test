@@ -8,6 +8,7 @@ import (
 	"os/signal"
 
 	"github.com/jasonkwh/wex-test/internal/data/pgx"
+	"github.com/jasonkwh/wex-test/internal/exchangerate"
 	"github.com/jasonkwh/wex-test/internal/server"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
@@ -34,8 +35,11 @@ func serve(cmd *cobra.Command, args []string) {
 		zl.Fatal("unable to create purchase repository", zap.Error(err))
 	}
 
+	// create exchange rate retriever
+	ret := exchangerate.NewRetriever(&http.Client{}, cfg.ExchangeRate.Within)
+
 	// start server
-	srv, err := server.NewServer(cfg.Server, re, cfg.ExchangeRate.Within, zl)
+	srv, err := server.NewServer(cfg.Server, re, ret, zl)
 	if err != nil {
 		zl.Fatal("unable to start the purchase transaction server", zap.Error(err))
 	}

@@ -46,3 +46,4 @@ migrate:
 
 mocks:
 	mockgen -package mocks -source internal/data/pgx/interface.go -destination test/mocks/mock_pgx_interface.go
+	mockgen -package mocks -source internal/exchangerate/interface.go -destination test/mocks/mock_retriever_interface.go

@@ -17,8 +17,8 @@ import (
 )
 
 type server struct {
-	within   int
 	repo     pgx.PurchaseRepository
+	ret      *exchangerate.Retriever
 	listener net.Listener
 	server   *grpc.Server
 
@@ -29,15 +29,15 @@ type server struct {
 	zl *zap.Logger
 }
 
-func NewServer(cfg config.ServerConfig, repo pgx.PurchaseRepository, within int, zl *zap.Logger) (*server, error) {
+func NewServer(cfg config.ServerConfig, repo pgx.PurchaseRepository, ret *exchangerate.Retriever, zl *zap.Logger) (*server, error) {
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", cfg.Port))
 	if err != nil {
 		return nil, fmt.Errorf("unable to listen: %v", err)
 	}
 
 	s := &server{
-		within:   within,
 		repo:     repo,
+		ret:      ret,
 		listener: listener,
 		zl:       zl,
 	}
@@ -76,7 +76,8 @@ func (s *server) GetPurchaseTransaction(ctx context.Context, req *purchasev1.Get
 		return nil, err
 	}
 
-	exr, err := exchangerate.Retrieve(ts.Date, req.Currency, s.within)
+	// retrieve latest exchange rate
+	exr, err := s.ret.Get(ts.Date, req.Currency)
 	if err != nil {
 		return nil, err
 	}
