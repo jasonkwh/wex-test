@@ -42,3 +42,7 @@ make postgres-clean
 ## gRPC Contracts
 
 If you need to check gRPC contracts, please redirect to [wex-test-upstream respository](https://github.com/jasonkwh/wex-test-upstream).
+
+## Screenshots
+
+![](./doc/images/screenshot1.png)
