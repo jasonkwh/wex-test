@@ -16,7 +16,7 @@ func ToFormattedDate(date *purchasev1.Date) string {
 	}
 	day := fmt.Sprintf("%d", date.Day)
 	if date.Day < 10 {
-		month = fmt.Sprintf("0%d", date.Day)
+		day = fmt.Sprintf("0%d", date.Day)
 	}
 
 	return fmt.Sprintf("%d-%s-%s", date.Year, month, day)

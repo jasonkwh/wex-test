@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-type Server struct {
+type server struct {
 	within   int
 	repo     pgx.PurchaseRepository
 	listener net.Listener
@@ -29,13 +29,13 @@ type Server struct {
 	zl *zap.Logger
 }
 
-func NewServer(cfg config.ServerConfig, repo pgx.PurchaseRepository, within int, zl *zap.Logger) (*Server, error) {
+func NewServer(cfg config.ServerConfig, repo pgx.PurchaseRepository, within int, zl *zap.Logger) (*server, error) {
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", cfg.Port))
 	if err != nil {
 		return nil, fmt.Errorf("unable to listen: %v", err)
 	}
 
-	s := &Server{
+	s := &server{
 		within:   within,
 		repo:     repo,
 		listener: listener,
@@ -50,7 +50,7 @@ func NewServer(cfg config.ServerConfig, repo pgx.PurchaseRepository, within int,
 	return s, nil
 }
 
-func (s *Server) SavePurchaseTransaction(ctx context.Context, req *purchasev1.SavePurchaseRequest) (*purchasev1.SavePurchaseResponse, error) {
+func (s *server) SavePurchaseTransaction(ctx context.Context, req *purchasev1.SavePurchaseRequest) (*purchasev1.SavePurchaseResponse, error) {
 	amount, err := strconv.ParseFloat(req.Amount, 32)
 	if err != nil {
 		return nil, err
@@ -70,7 +70,7 @@ func (s *Server) SavePurchaseTransaction(ctx context.Context, req *purchasev1.Sa
 	}, nil
 }
 
-func (s *Server) GetPurchaseTransaction(ctx context.Context, req *purchasev1.GetPurchaseRequest) (*purchasev1.GetPurchaseResponse, error) {
+func (s *server) GetPurchaseTransaction(ctx context.Context, req *purchasev1.GetPurchaseRequest) (*purchasev1.GetPurchaseResponse, error) {
 	ts, err := s.repo.GetPurchase(ctx, req.Id)
 	if err != nil {
 		return nil, err
@@ -94,11 +94,11 @@ func (s *Server) GetPurchaseTransaction(ctx context.Context, req *purchasev1.Get
 	}, nil
 }
 
-func (s *Server) Run() error {
+func (s *server) Run() error {
 	return s.server.Serve(s.listener)
 }
 
-func (s *Server) Close() error {
+func (s *server) Close() error {
 	var err error
 
 	if s.server != nil {

@@ -43,3 +43,6 @@ migrate:
 		-schemas=wex \
 		-placeholders.service_user=${SVCUSER} \
 		migrate
+
+mocks:
+	mockgen -package mocks -source internal/data/pgx/interface.go -destination test/mocks/mock_pgx_interface.go
