@@ -33,9 +33,9 @@ func TestServer_SavePurchaseTransaction(t *testing.T) {
 				req: &purchasev1.SavePurchaseRequest{
 					Description: "test description",
 					TransactionDate: &purchasev1.Date{
-						Year:  2023,
-						Month: 6,
-						Day:   1,
+						Year:  "2023",
+						Month: "06",
+						Day:   "01",
 					},
 					Amount: "12.34",
 				},
@@ -97,9 +97,9 @@ func Test_server_GetPurchaseTransaction(t *testing.T) {
 			want: &purchasev1.GetPurchaseResponse{
 				Description: "test transaction",
 				TransactionDate: &purchasev1.Date{
-					Year:  2023,
-					Month: 6,
-					Day:   1,
+					Year:  "2023",
+					Month: "06",
+					Day:   "01",
 				},
 				Amount:          "12.34",
 				Id:              "test-transaction-id",

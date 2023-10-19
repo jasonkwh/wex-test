@@ -33,9 +33,9 @@ func TestIntegration(t *testing.T) {
 	saveResp, err := cl.SavePurchaseTransaction(ctx, &purchasev1.SavePurchaseRequest{
 		Description: "test description",
 		TransactionDate: &purchasev1.Date{
-			Year:  2023,
-			Month: 3,
-			Day:   31,
+			Year:  "2023",
+			Month: "03",
+			Day:   "31",
 		},
 		Amount: amount,
 	})

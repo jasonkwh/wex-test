@@ -18,11 +18,12 @@ func ValidateSavePurchase(req any) error {
 func validateTransactionDetails(r *purchasev1.SavePurchaseRequest) error {
 	errs := validation.ValidateStruct(r,
 		validation.Field(r.Description, validation.Length(0, 50)),
-		validation.Field(r.Amount, validation.Min(1)), //minimum amount is $0.01
+		validation.Field(r.Amount, validation.Min(1), validation.Required), //minimum amount is $0.01
 	)
 	derr := validation.Validate(
 		utils.ToFormattedDate(r.TransactionDate),
 		validation.Date("2006-01-02"),
+		validation.Required,
 	)
 
 	errs = multierr.Append(errs, derr)

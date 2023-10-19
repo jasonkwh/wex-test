@@ -10,28 +10,25 @@ import (
 
 func ToFormattedDate(date *purchasev1.Date) string {
 	// to dealt with months or days less than 10
-	month := fmt.Sprintf("%d", date.Month)
-	if date.Month < 10 {
-		month = fmt.Sprintf("0%d", date.Month)
+	month := date.Month
+	if len(month) == 1 {
+		month = fmt.Sprintf("0%s", month)
 	}
-	day := fmt.Sprintf("%d", date.Day)
-	if date.Day < 10 {
-		day = fmt.Sprintf("0%d", date.Day)
+	day := date.Day
+	if len(day) == 1 {
+		day = fmt.Sprintf("0%s", day)
 	}
 
-	return fmt.Sprintf("%d-%s-%s", date.Year, month, day)
+	return fmt.Sprintf("%s-%s-%s", date.Year, month, day)
 }
 
 func ToUpstreamDate(date string) *purchasev1.Date {
 	dateParts := strings.Split(date, "-")
-	year, _ := strconv.Atoi(dateParts[0])
-	month, _ := strconv.Atoi(dateParts[1])
-	day, _ := strconv.Atoi(dateParts[2])
 
 	return &purchasev1.Date{
-		Year:  int32(year),
-		Month: int32(month),
-		Day:   int32(day),
+		Year:  dateParts[0],
+		Month: dateParts[1],
+		Day:   dateParts[2],
 	}
 }
 

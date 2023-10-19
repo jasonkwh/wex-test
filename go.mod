@@ -6,7 +6,7 @@ require (
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/golang/mock v1.4.4
 	github.com/jackc/pgx/v5 v5.4.3
-	github.com/jasonkwh/wex-test-upstream v0.0.0-20231010132223-f2c952e5782f
+	github.com/jasonkwh/wex-test-upstream v0.0.0-20231019072625-71abdbab38c4
 	github.com/onsi/gomega v1.28.0
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.17.0
