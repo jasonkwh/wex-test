@@ -46,3 +46,4 @@ If you need to check gRPC contracts, please redirect to [wex-test-upstream respo
 ## Screenshots
 
 ![](./doc/images/screenshot1.png)
+![](./doc/images/screenshot2.png)
